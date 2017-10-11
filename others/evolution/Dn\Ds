@@ -1,0 +1,42 @@
+物种繁衍的过程当中，个体之间都会有所差异，这些差异从微观的角度来看，就是每个个体的DNA序列会有不同，反映在外观上，就是每个个体性状的不同。 这些性状的差异，或多或少都会影响到个体适应环境的生存能力，若是在遇到环境有大变动时，原本在族群中较为罕见的性状，有可能会因为较能适应变动后的环境而被筛选出来，导致这个性状在族群中变得相当普遍，这就是所谓的天择。
+个体DNA序列的差异以是否会影响蛋白质序列做区分，可以分成两种：
+(1). Synonymous mutation：DNA序列的改变不会影响蛋白质序列
+(2). Non-synonymous mutation：DNA序列的改变会影响蛋白质序列，可能进而造成蛋白质功能的改变。
+天择的作用会对以上两种变异去做筛选，根据筛选的方向，天择可能有以下三种状况：
+(1). Positive selection：性状的改变使个体更能适应环境，倾向保留non-synonymous mutations。
+(2). Negative selection：性状的改变使个体变得较不适应环境，non-synonymous mutations的数量会减少。
+(3). Neutral selection：没有明显的天择作用，或是以上两种天择达到平衡。 不会特别筛选出某种变异或性状。
+不同的天择作用会影响族群的演化方向，要想知道族群目前的演化状况，可以藉由计算dN/dS ratio这个指标来观察天择的作用：
+dN/dS ratio的定义是”the ratio of the number of non-synonymous substitutions per non-synonymous site (PN) to the number of synonymous substitutions per synonymous site (PS)”，在概念上来说，dN/dS ratio可以视为将样品non-synonymous mutation的观察值对期望值的比值(PN)除以synonymous mutation的观察值对期望值之比值(PS)，详细的计算过程如下：
+1.用 reference 序列来计算 non-synonymous 的期望值和 synonymous 的期望值 ，主要是用以下两个公式(公式一、公式二)：
+171315_1.png
+说明 ：f i的算法是逐一去检视codon中第i个核酸序列的各种突变可能性，并且看该点突变后所转录、转译出的蛋白质序列是否和原本相同，若是不同，则表示该种突变为non-synonymous，该点的该种突变之期望值为1/3，若是相同，则表示该种突变为synonymous，期望值为0，f i就是由加总第i个序列的各种突变可能性之non -synonymou期望值而得，而每个序列位置的f i值，最大只能到1，最小则为0。 n则是进一步去加总codon的每个f i值，且最大只能到3，最小一样是0。
+例子 ：以TAT这个codon为例：
+第一个位置的核酸序列为T，其可能突变为A、C或G，因此我们依序检查每种突变可能性：
+TAT (Tyr) -> AAT (Asn)：non-synonymous
+TAT (Tyr) -> CAT (His)：non-synonymous
+TAT (Tyr) -> GAT (Asp)：non-synonymous
+因为non-synonymous的期望值是1/3，所以在第一个核酸序列，我们所算得的f i值就是1/3 x 3 = 1。
+后面的两个核酸序列也以此类推去计算，如果把整个计算过程整理成表格的话，会看起来像：
+171315_2.png
+由以上公式计算出每个codon的期望值之后，接着要计算一个基因或是一段核酸序列的期望值，就只要把每个codon的值加总就好了，如公式二：
+171315_3.png
+例子 ：假设有个基因它的所有codon是ATG – AAA – CCC – GGG – TTT – TAA，要计算这个基因的non-synonymous期望值(N)和synonymous期望值(S)，就只要先利用公式一计算出每个codon的期望值，接着再加总即可，计算步骤整理如下表：
+171315_4.png
+2.对照 reference 序列和 sample 序列来计算 non-synonymous 和 synonymous 的观察值：
+171315_5.png
+说明 ：要得到每个codon的观察值(n di )，主要是将样品序列和参考序列做比对，去检视样品序列中有哪些变异，并且考虑这些变异可能的发生先后顺序来计算non-synonymous和synonymous mutation的观察值。
+例子 ：假设现在有个sample的序列为ATG – AAA – CGC – GGC – TAC – TAA，将它和reference的序列ATG – AAA – CCC – GGG – TTT – TAA (同上例的序列)做比较，并可计算出non-synonymous和synonymous mutation的观察值，计算步骤如下表：
+171315_6.png
+3.计算dN/dS ratio ，主要是利用以下三个公式(公式四、五、六) ：
+171315_7.png
+例子 ：延续上例，套用公式四、五、六的计算步骤如下：
+171315_8.png
+结果解读：
+dN/dS ratio > 1: positive selection
+dN/dS ratio < 1: negative selection
+dN/dS ratio = 1: neutral selection
+以上所描述的是已知sample完整序列的计算方式，至于要计算定序sample的dN/dS ratio，公式一、二、三、四，也就是一直到计算P N 、P S的部份可以改成以下列公式计算：
+171315_9.png
+说明 ：
+n i 、s i的算法和公式一的n算法是一样的，n dij 、s dij则可以使用diversitools这个程式去做计算： http://josephhughes.github.io/btctools/ ，算出P N 、P S之后，一样用公式五、六去接着计算dN/dS ratio就可以得到结果了！
