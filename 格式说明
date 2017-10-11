@@ -1,0 +1,21 @@
+请在code前加上作为代码描述部分
+####
+# Describe: 代码作用
+# Environment:语言环境
+# Author: 作者
+# Input:输入文件
+# Output:输出文件
+# Package requirement:相关依赖包
+# Data: 时间
+####
+
+例:  
+####
+# Describe: use affy packages to preprocess .CEL
+# Environment: R 3.3.2
+# Author: Yu Chen (SKLMG)
+# Input:.CEL file
+# Output:Expression matrix
+# R Package requirement: affy, tcltk
+# Data: 2017-08-15
+####
