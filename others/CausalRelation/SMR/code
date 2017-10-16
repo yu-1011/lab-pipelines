@@ -1,1 +1,9 @@
+#Running SMR using summary-level statistics from GWAS and eQTL studies  
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --out mysmr --thread-num 10
 
+--bfile reads individual-level SNP genotype data (in PLINK binary format) from a reference sample for LD estimation, i.e. .bed, .bim, and .fam files.
+--gwas-summary reads summary-level data from GWAS. The input format follows that for GCTA-COJO analysis ( http://cnsgenomics.com/software/gcta/#Conditionalanalysis).
+
+--beqtl-summary reads summary-level data from a eQTL study in binary format. We store eQTL summary data in three separate files .esi (SNP information, in the same format as the PLINK .bim file), .epi (probe information) and .besd (eQTL summary statistics in binary format). See Data Management for more information. We have prepared the data from the Westra study (Westra et al. 2013 Nat Genet) in this format, which is available for download at Download.
+
+--out saves the results from the SMR analysis in .smr file (text format).
