@@ -1,9 +1,60 @@
-#Running SMR using summary-level statistics from GWAS and eQTL studies  
-smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --out mysmr --thread-num 10
+####
+# Describe: use SMR to integrat GWAS result and eQTL
+# Environment: SMR
+# Author: Yu Chen (SKLMG)
+# Input: .bed, .bim, and .fam files.
+# Output:saves the results from the SMR analysis in .smr file
+# Data: 2017-10-16
+####
 
+[Running SMR using summary-level statistics from GWAS and eQTL studies]
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --out mysmr --thread-num 10
 --bfile reads individual-level SNP genotype data (in PLINK binary format) from a reference sample for LD estimation, i.e. .bed, .bim, and .fam files.
 --gwas-summary reads summary-level data from GWAS. The input format follows that for GCTA-COJO analysis ( http://cnsgenomics.com/software/gcta/#Conditionalanalysis).
-
 --beqtl-summary reads summary-level data from a eQTL study in binary format. We store eQTL summary data in three separate files .esi (SNP information, in the same format as the PLINK .bim file), .epi (probe information) and .besd (eQTL summary statistics in binary format). See Data Management for more information. We have prepared the data from the Westra study (Westra et al. 2013 Nat Genet) in this format, which is available for download at Download.
-
 --out saves the results from the SMR analysis in .smr file (text format).
+Missing Value is represented by "NA".
+--thread-num specifies the number of OpenMP threads for parallel computing. The default value is 1.
+
+[Optional Commands]
+# Specify a method for HEIDI test
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --heidi-mtd 0 --out mysmr
+--heidi-mtd specifies a method for HEIDI test. 0 for the original HEIDI test approach as in Zhu et al. (2016 Nature Genetics), and 1 for a new HEIDI test ( beta version for testing). The default value is 1. The new approach uses up to the top 20 SNPs in the cis-eQTL region (including the top cis-eQTL) for heterogeneity test because our latest simulation shows that the power of HEIDI test increases initially but then decreases with increasing number of SNPs (m) with a peak at m = ~20.
+
+# Filter SNPs by MAF (in the reference sample)
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --maf 0.01 --out mysmr
+--maf removes SNPs based on a minor allele frequency (MAF) threshold in the reference sample.
+
+# Include or exclude a subset of individuals
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --keep myindi.list --out mysmr
+--keep includes a subset of individuals in the reference sample for analysis.
+--remove excludes a subset of individuals in the reference sample from the analysis.
+
+# Include or exclude a subset of eQTL summary data
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --extract-snp mysnp.list --extract-probe myprobe.list --out mysmr
+--extract-snp extracts a subset of SNPs for analysis.
+--exclude-snp excludes a subset of SNPs from analysis.
+--extract-probe extracts a subset of probes for analysis.
+--exclude-probe excludes a subset of probes from analysis.
+
+# Other parameters
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --peqtl-smr 5e-8 --ld-pruning 0.9 --peqtl-heidi 1.57e-3 --heidi-m 3 --cis-wind 2000 --thread-num 5 --out mysmr
+--peqtl-smr p-value threshold to select the top associated eQTL for the SMR test. The default value is 5.0e-8. By default, we only run the SMR analysis in the cis regions. Please see below for the SMR analysis in trans regions.
+--peqtl-heidi threshold of eQTL p-value to select eQTLs for the HEIDI test. The default value is 1.57e-3, which is equivalent to a chi-squared value (df=1) of 10.
+--ld-pruning LD r-squared threshold for pruning SNPs (eQTLs) in HEIDI test, removing SNPs in high LD with the top associated eQTL. The default value is 0.9.
+--heidi-m minimum requirement of the number of eQTLs used in the HEIDI test. We will skip the HEIDI test if the number of SNPs is smaller than the threshold. This is because if the number of SNPs is too small, HEIDI test has little power to detect heterogeneity and possibly generates misleading result. The default value is 3.
+--cis-wind defines a window centred around the probe to select cis-eQTLs (passing a p-value threshold) for the SMR analysis. The default value is 2000Kb.
+
+# Specify a target SNP for the SMR and HEIDI tests
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --target-snp rs12345 --out mysmr
+--target-snp specifies a SNP as the target for the SMR and HEIDI tests as described above.
+
+# Turn off the HEIDI test
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --heidi-off --out mysmr
+--heidi-off turns off the HEIDI test.
+
+# SMR and HEIDI tests in trans regions
+The trans-eQTLs are defined as the eQTLs that are more than 5Mb away from the probe.
+smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --out mytrans --trans --trans-wind 1000
+--trans turns on SMR and HEIDI tests in trans regions.
+--trans-wind defines a window centred around the top associated trans-eQTL to select SNPs (passing a p-value threshold) for the SMR and HEIDI test. The default value is 1000Kb.
