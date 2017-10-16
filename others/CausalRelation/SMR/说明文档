@@ -1,0 +1,37 @@
+This software tool implements the SMR & HEIDI methods to test for pleiotropic association between the expression level of a gene and a complex trait of interest using summary-level data from GWAS and expression quantitative trait loci (eQTL) studies (Zhu et al. 2016 Nat Genet). The methodology can be interpreted as an analysis to test if the effect size of a SNP on the phenotype is mediated by gene expression. This tool can therefore be used to prioritize genes underlying GWAS hits for follow-up functional studies.
+
+#.ma format
+mygwas.ma
+SNP	A1	A2	freq	b	se	p	n
+rs1001	A	G	0.8493 	0.0024 	0.0055 	0.6653	129850
+rs1002	C	G	0.03606	0.0034	0.0115	0.7659	129799
+rs1003	A	C	0.5128	0.045	0.038	0.2319	129830
+......							
+Columns are SNP, the effect (coded) allele, the other allele, frequency of the effect allele, effect size, standard error, p-value and sample size. The headers are not keywords and will be omitted by the program. Important: “A1” needs to be the effect allele with “A2” being the other allele and “freq” needs to be the frequency of “A1”. NOTE:1) For a case-control study, the effect size should be log(odds ratio) with its corresponding standard error.
+
+#mysmr.smr format
+ProbeID	Probe_Chr	Gene	Probe_bp	SNP	SNP_Chr	SNP_bp	A1	A2	Freq	b_GWAS	se_GWAS	p_GWAS	b_eQTL	se_eQTL	p_eQTL	b_SMR	se_SMR	p_SMR	p_HEIDI	nsnp_HEIDI
+prb01	1	Gene1	1001	rs01	1	1011	C	T	0.95	-0.024	0.0063	1.4e-04	0.36	0.048	6.4e-14	-0.0668	0.0197	6.8e-04	NA	NA
+prb02	1	Gene2	2001	rs02	1	2011	G	C	0.0747	0.0034	0.0062	5.8e-01	0.62	0.0396	2e-55	0.0055	0.01	5.8e-01	4.17e-01	28
+......					
+Columns are probe ID, probe chromosome, gene name, probe position, SNP name,SNP chromosome, SNP position, the effect (coded) allele, the other allele, frequency of the effect allele (estimated from the reference samples), effect size from GWAS, SE from GWAS, p-value from GWAS, effect size from eQTL study, SE from eQTL study, p-value from eQTL study, effect size from SMR, SE from SMR, p-value from SMR, p-value from HEIDI (HEterogeneity In Depedent Instruments) test, and number of SNPs used in the HEIDI test.
+Missing Value is represented by "NA".
+
+#myindi.list format
+F001	S001
+F002	S002
+F003	S001
+...	
+
+#mysnp.list format
+rs1001
+rs1002
+rs1003
+...
+
+#myprobe.list format
+probe1001
+probe1002
+probe1003
+...
+
