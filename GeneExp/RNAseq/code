@@ -1,1 +1,33 @@
+####
+# Describe: .fq to rsem
+# Environment: Linux bash
+# Author: Jiacheng Dai (SKLMG)
+# Data: 2017.10.17
+####
 
+cd /zs32/home/yxia/DaiJiacheng/01microRNA.2015-6-10/mRNA/
+#在Windows写的代码，到Linux里面运行会有编译错误
+#用dos2unix .bash进行转换
+sh .bash运行
+###############################################################################
+for i in Human_M30-T12-V-IM15025-R02 Human_M30-T12-V-IM15025-R211 Human_M30-T12-V-IM15025-R216 Human_M30-T12-V-IM15025-R242 Human_M30-T12-V-IM15025-R280 Human_M30-T12-V-IM15025-R281 Human_M30-T12-V-IM15025-R293 Human_M30-T12-V-IM15025-R76 Human_M30-T13-V-IM15026-R107 Human_M30-T13-V-IM15026-R19 Human_M30-T13-V-IM15026-R204 Human_M30-T13-V-IM15026-R88 Human_M30-T13-V-IM15026-R98 Human_M30-T13-V-IM15026-S52 Human_M30-T13-V-IM15026-S88; do
+##trimmomatic
+##input:从公共文件夹拿到的fq文件
+##output：paired$unpaired.txt
+java -jar /opt/tools/seq-analysis/Trimmomatic-0.36/trimmomatic-0.36.jar PE /zs32/data-analysis/liucy_group/shareData/microRNA.2015-6-10/reads/${i}_good_1.fq /zs32/data-analysis/liucy_group/shareData/microRNA.2015-6-10/reads/${i}_good_2.fq /zs32/home/yxia/DaiJiacheng/01microRNA.2015-6-10/mRNA/${i}_good_1_paired.txt /zs32/home/yxia/DaiJiacheng/01microRNA.2015-6-10/mRNA/${i}_good_1_unpaired.txt /zs32/home/yxia/DaiJiacheng/01microRNA.2015-6-10/mRNA/${i}_good_2_paired.txt /zs32/home/yxia/DaiJiacheng/01microRNA.2015-6-10/mRNA/${i}_good_2_unpaired.txt ILLUMINACLIP:HiSeq2500-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50;
+##remove unpaired.txt
+rm -f ${i}_good_1_unpaired.txt;
+rm -f ${i}_good_2_unpaired.txt;
+##RSEM
+/opt/tools/RSEM-1.3.0/rsem-calculate-expression -p 8 --paired-end --star --star-path /opt/tools/seq-analysis/STAR-STAR_2.4.2a/STAR/bin/Linux_x86_64 --estimate-rspd --append-names --output-genome-bam ${i}_good_1_paired.txt ${i}_good_2_paired.txt RSEM_index2 ${i};
+##除了rsem的结果
+##paired.txt,bam,都要删掉节约内存
+rm -f ${i}_good_1_paired.txt;
+rm -f ${i}_good_2_paired.txt;
+rm -f ${i}.genome.bam;
+rm -f ${i}.transcript.bam;
+rm -f ${i}_good_StarSJ.out.tab;
+rm -f ${i}_good_Starlog.out;
+rm -f ${i}_good_Starlog.final.out;
+rm -f ${i}_good_Starlog.progress.out;
+done
