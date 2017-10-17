@@ -5,7 +5,7 @@
 到时这里会是一个目录的啦  
  
 
-##目录
+## 目录
 DEG 
 Cell type adjustment—
 Connectivity Outlier
@@ -14,7 +14,6 @@ Network—WGCNA
 Module conservation—Zsummary
 Functional enrichment—DAVID, Gorilla
 
-
 Methylation 
 
 DMP, DMR—
@@ -22,27 +21,23 @@ Feature—ChromHMM
 GWAS overlap—INRICH, 
 
 
-
 Call Variants
 Imputation
 LDSR—LD regression
 π1 statistics
-
-GWAS
-CVAS
-RVAS
+GWAS  
+CVAS  
+RVAS  
 
 QTL—matrix eQTL
 
-
-Causal relationship—SMR, NEO, CIT, metaSCAN
-
+Causal relationship—SMR, NEO, CIT, metaSCAN  
 
 Evolution
 HAR
-Dn/Ds
+Dn/Ds  
 
-##格式说明
+## 格式说明
 每个文件夹至少包括两个部分  
 1.code  
 2.说明文档
