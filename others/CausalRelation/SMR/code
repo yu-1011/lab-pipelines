@@ -58,4 +58,3 @@ The trans-eQTLs are defined as the eQTLs that are more than 5Mb away from the pr
 smr --bfile mydata --gwas-summary mygwas.ma --beqtl-summary myeqtl --out mytrans --trans --trans-wind 1000
 --trans turns on SMR and HEIDI tests in trans regions.
 --trans-wind defines a window centred around the top associated trans-eQTL to select SNPs (passing a p-value threshold) for the SMR and HEIDI test. The default value is 1000Kb.
-
