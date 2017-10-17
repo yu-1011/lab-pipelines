@@ -1,8 +1,11 @@
 ####
-# Describe: .fq to rsem
-# Environment: Linux bash
-# Author: Jiacheng Dai (SKLMG)
-# Data: 2017.10.17
+# Describe: 对RNAseq进行预处理，从fastq文件转换成TPM/FPKM文件
+# Environment:Linux
+# Author: sklmg
+# Input:fastq
+# Output:txt
+# Package requirement:trimmomatic,rsem
+# Data: 2017-8
 ####
 
 cd /zs32/home/yxia/DaiJiacheng/01microRNA.2015-6-10/mRNA/
