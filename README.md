@@ -5,7 +5,7 @@
 到时这里会是一个目录的啦  
  
 
-
+##目录
 DEG 
 Cell type adjustment—
 Connectivity Outlier
@@ -42,8 +42,9 @@ Evolution
 HAR
 Dn/Ds
 
-每个文件夹至少包括两个部分  
-1.code  
+##格式说明
+每个文件夹至少包括两个部分  
+1.code  
 2.说明文档
 
 请在code前加上作为代码描述部分  
