@@ -1,7 +1,7 @@
 ####
 # Describe: 对RNAseq进行预处理，从fastq文件转换成TPM/FPKM文件
 # Environment:Linux
-# Author: sklmg
+# Author: Jiacheng Dai (sklmg)
 # Input:fastq
 # Output:txt
 # Package requirement:trimmomatic,rsem
