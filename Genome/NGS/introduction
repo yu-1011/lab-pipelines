@@ -1,0 +1,43 @@
+Data Pre-processing
+
+1. Remove adapter and prune reads according to base quality（Trimmomatic）
+
+2. Quanlity control to ensure no adapter and 95% base quality is larger than 20 (FASTQC)
+
+Call genotypes
+ 
+1. Mapping raw sequence data to reference genome (BWA)
+
+2. Remove PCR duplication (Picard-tools)
+
+GATK
+
+3. Indelrealigner
+
+4. BQSR
+Base quality score recalibration (BQSR) is a process in which apply machine learning to model  technical errors empirically and adjust the quality scores accordingly.
+The base recalibration process involves two key steps: first the program builds a model of covariation based on the data and a set of known variants, then it adjusts the base quality scores in the data based on the model. The known variants are used to mask out bases at sites of real (expected) variation, to avoid counting real variants as errors. Outside of the masked sites, every mismatch is counted as an error. The rest is mostly accounting.
+There is an optional but highly recommended step that involves building a second model and generating before/after plots to visualize the effects of the recalibration process. This is useful for quality control purposes.
+
+5. call genotypes (HaplotypeCaller; per chr a time)
+
+6. VQSR
+Recalibrate variant quality scores and produce a callset filtered for the desired levels of sensitivity and specificity.
+
+IMPUTATION
+
+Beagle is a software package for phasing genotypes and for imputing ungenotyped markers. There are two strategy for imputation: non-ref-based imputation; ref-based imputation. 
+
+Annotation
+
+Removes snps which AR2<0.8 and use annovar to annotation snps.
+
+eQTL-analysis
+1.	Keep snps which maf > 0.05 and hwe>0.000001
+
+2.	Zip and index vcf files
+
+3.	FastQTL eQTL analysis (normial and permutation)
+
+
+
